@@ -1,0 +1,34 @@
+{
+  "name": "bharat-intern-blog",
+  "version": "1.0.0",
+  "description": "A Blog Website.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js -e hbs,js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sujal-Yadav/bharat_intern_blog.git"
+  },
+  "author": "Sujal Yadav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sujal-Yadav/bharat_intern_blog/issues"
+  },
+  "homepage": "https://github.com/Sujal-Yadav/bharat_intern_blog#readme",
+  "dependencies": {
+    "alert": "^6.0.1",
+    "alerts": "^0.1.3",
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "fs": "^0.0.1-security",
+    "hbs": "^4.2.0",
+    "html": "^1.0.0",
+    "js-alert": "^2.0.0",
+    "mongoose": "^8.0.2",
+    "path": "^0.12.7"
+  }
+}
