@@ -35,24 +35,36 @@ const isAuthenticated = (req, res, next) => {
     }
 };
 
-const isBlogAuthor = async (req, res, next) => {
-    const email = req.session.user.email;
-    const user = await User.findOne({ email });
+// const isBlogAuthor = async (req, res, next) => {
+//     const email = req.session.user.email;
+//     const user = await User.findOne({ email });
+//     const blogs = await Blog.find();
+//     const id = user._id;
 
-    const id = user._id;
-    try {
-        const blog = await Blog.findOne({ author: id });
-        // Check if the logged-in user is the author of the blog
-        if (blog.author.equals(user._id)) {
-            next();
-        } else {
-            res.redirect('/getblogs'); // Redirect to the blogs list or handle unauthorized access
-        }
-    } catch (err) {
-        console.error(err);
-        res.render('error'); // Render an error page or handle the error as needed
-    }
-}
+//     if (blogs) {
+//         try {
+//             const blog = await Blog.findOne({ author: id });
+//             // console.log(blog);
+//             if (!blog) {
+//                 // res.sendFile("Pages/profile.html", { root: __dirname });
+//                 res.redirect('/profile/addblog');
+//             }
+
+//             else if (blog.author.equals(user._id)) {
+//                 next();
+//             } else {
+//                 res.redirect('/getblogs');
+//             }
+//         } catch (err) {
+//             console.error(err);
+//             res.render('error'); 
+//         }
+//     }
+//     else {
+//         res.redirect('/profile');
+//     }
+
+// }
 
 app.get('/', (req, res) => {
     res.sendFile("Pages/login.html", { root: __dirname });
@@ -170,7 +182,7 @@ app.get('/getblogs', isAuthenticated, async (req, res) => {
                         </div>
                     </div>
                     <div class="grid grid-cols-2  gap-2 mt-3  text-left text-white">
-                        <a href="/readBlog?id=${element._id}" class="btn col-span-1 text-white hover:bg-sky-500 bg-sky-500">Read</a>
+                        <a href="/readBlog?id=${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Read</a>
                     </div>
                 </article>`
         });
@@ -187,7 +199,10 @@ app.get('/getblogs', isAuthenticated, async (req, res) => {
 })
 
 
-app.post('/profile/addblog', isAuthenticated, isBlogAuthor, async (req, res) => {
+app.post('/profile/addblog', isAuthenticated, async (req, res) => {
+    const blog = req.params.blog;
+
+    // if()
     try {
         const email = req.session.user.email;
         const user = await User.findOne({ email });
@@ -263,7 +278,7 @@ app.get('/readBlog', isAuthenticated, (req, res) => {
     res.sendFile('Pages/blog.html', { root: __dirname });
 });
 
-app.get('/profile/getblogs/back', isAuthenticated, isBlogAuthor, (req, res) => {
+app.get('/profile/getblogs/back', isAuthenticated, (req, res) => {
     res.redirect('/profile/getblogs');
 });
 
@@ -271,7 +286,7 @@ app.get('/getblogs/back', isAuthenticated, (req, res) => {
     res.redirect('/getblogs');
 });
 
-app.get(`/profile/getblogs`, isAuthenticated, isBlogAuthor, async (req, res) => {
+app.get(`/profile/getblogs`, isAuthenticated, async (req, res) => {
     try {
         let htmlFile = fs.readFileSync(__dirname + '/Pages/profile.html', 'utf8', err => {
             if (err) {
@@ -317,8 +332,8 @@ app.get(`/profile/getblogs`, isAuthenticated, isBlogAuthor, async (req, res) => 
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 mt-3  text-left text-white">
-                        <a href="/readBlog?id=${element._id}" class="btn col-span-1 text-white hover:bg-sky-500 bg-sky-500">Read</a>
-                        <a href="/profile/deleteBlog?id=${element._id}" class="btn col-span-1 text-white hover:bg-sky-500 bg-sky-500">Delete</a>
+                        <a href="/readBlog?id=${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Read</a>
+                        <a href="/profile/deleteBlog?id=${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Delete</a>
                     </div>
                 </article>`
         });
@@ -332,25 +347,50 @@ app.get(`/profile/getblogs`, isAuthenticated, isBlogAuthor, async (req, res) => 
     }
 });
 
-app.get('/profile', isAuthenticated, isBlogAuthor, async (req, res) => {
+app.get('/profile', isAuthenticated, async (req, res) => {
     const email = req.session.user.email;
     const userId = await User.findOne({ email });
+    const blog = await Blog.find();
+    if (!blog) {
+        res.sendFile("Pages/profile.html", { root: __dirname });
+    }
+    else {
 
-    return res.redirect(`/profile/getblogs?userId=${userId._id}`);
+        res.redirect(`/profile/getblogs?userId=${userId._id}`);
+    }
 })
 
-app.get('/profile/deleteBlog', isAuthenticated, isBlogAuthor, async (req, res) => {
+app.get('/profile/deleteBlog', isAuthenticated, async (req, res) => {
     const user = req.query.id;
+    console.log(user);
+    // const email = req.session.user.email;
 
-    Blog.deleteOne({ _id: user })
-        .then(result => {
-            console.log(result);
-        })
-        .catch(error => {
-            console.error(error);
-        });
+    // let blog = await Blog.findOne({ author: id });
 
-    return res.redirect(`/profile/getblogs?userId=${userId}`);
+    // Blog.deleteOne({ _id: user })
+    //     .then(result => {
+    //         console.log(result);
+    //     })
+    //     .catch(error => {
+    //         console.error(error);
+    //     });
+
+    const blog = Blog.findOne({ userId: user })
+    if (blog) {
+        Blog.deleteOne({ _id: user })
+            .then(result => {
+                console.log(result);
+                console.log("Blog Deleted")
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        return res.redirect(`/profile/getblogs?userId=${blog.author}`);
+    } else {
+        res.redirect('/profile')
+    }
+
+
 })
 
 app.listen(port, () => {

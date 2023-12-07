@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <!-- <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                     <div class="relative ml-3">
                         <div>
                             <a href="/signup">
@@ -42,45 +42,75 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </nav>
 
-
-    <form action="/userlogin" method="post">
-        <div class="my-10 mx-11 space-y-12">
-            <div class="my-10 mx-11 border-b border-gray-900/10 pb-12">
-                <p class="text-center text-5xl font-semibold leading-10 my-11 text-gray-900">User Login</p>
-                <div class="mt-10 grid grid-rows-1 gap-x-6 gap-y-8 grid-flow-col sm:grid-rows-2">
-
-                    <div class="sm:row-span-2">
-                        <label for="email" class="block text-lg font-medium leading-6 text-gray-900">Email
-                            address</label>
-                        <div class="mt-2 border-2 rounded-md">
-                            <input id="email" name="email" type="email" required autocomplete="email"
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
-                    </div>
-
-                    <div class="sm:row-span-2">
-                        <label for="region" class="block text-lg font-medium leading-6 text-gray-900">Password
-                        </label>
-                        <div class="mt-2 border-2 rounded-md">
-                            <input type="password" name="password" id="password" required autocomplete="address-level1"
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
-                    </div>
-
-
+    <div class="my-10 mx-11 space-y-12">
+        <div class="my-10 mx-11">
+            <div class="mt-10 grid grid-cols-2 gap-x-6 gap-y-8">
+                <div class="col-start-1">
+                    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+                        type="module"></script><dotlottie-player
+                        src="https://lottie.host/00b8e085-defc-4a11-a5ae-ab32f942c3d0/VHuOw565kc.json"
+                        background="transparent" speed="1" style="width: 600px; height: 600px" direction="1"
+                        mode="normal" loop autoplay></dotlottie-player>
                 </div>
+
+                <form action="/userlogin" method="post">
+                    <div class="my-10 mx-11 space-y-12 pt-px">
+                        <div class="my-14 mx-11 pb-12">
+                            <p class="text-center text-5xl font-semibold leading-10 my-11 text-gray-900">User Login</p>
+                            <div class="mt-10 grid grid-col-1 gap-x-6 gap-y-8 grid-flow-col sm:grid-rows-2">
+
+                                <div class="sm:row-span-1">
+                                    <label for="email" class="block text-lg font-medium leading-6 text-gray-900">Email
+                                        address</label>
+                                    <div class="mt-2 border-2 rounded-md">
+                                        <input id="email" name="email" type="email" required autocomplete="email"
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    </div>
+                                </div>
+
+                                <div class="sm:row-span-1">
+                                    <label for="region"
+                                        class="block text-lg font-medium leading-6 text-gray-900">Password
+                                    </label>
+                                    <div class="mt-2 border-2 rounded-md">
+                                        <input type="password" name="password" id="password" required
+                                            autocomplete="address-level1"
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="my-10 mx-11 space-y-12">
+                        <div class="my-10 mx-11">
+                            <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-4">
+
+                                <button type="submit" class="btn btn-primary col-span-2 hover:bg-[#3b82f6] bg-[#1d4ed8]"
+                                    id="submit">Login
+                                </button>
+                                <a href="/signup"
+                                    class="btn btn-primary col-span-2  hover:bg-[#3b82f6] bg-[#1d4ed8]"><button
+                                        type="submit" id="submit">Sign Up</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
+    </div>
 
-        <div class="d-grid gap-2 col-6 mx-auto text-gray-300" style="border-radius: 4px;">
-            <button type="submit" id="submit" class="btn btn-primary bg-sky-500">Login</button>
-        </div>
-    </form>
+
+
 
 </body>
 
