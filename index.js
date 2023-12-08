@@ -175,14 +175,15 @@ app.get('/getblogs', isAuthenticated, async (req, res) => {
                             <p class="font-semibold text-gray-900">
                                 <a href="#">
                                     <span class="absolute inset-0"></span>
-                                    ${user.firstname} ${user.lastname}
+                                    ${element.fullname}
                                 </a>
                             </p>
                             <p class="text-gray-600">${element.profession}</p>
                         </div>
                     </div>
                     <div class="grid grid-cols-2  gap-2 mt-3  text-left text-white">
-                        <a href="/readBlog?id=${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Read</a>
+                        <a href="/readBlog/${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Read</a>
+                        <a href="/shareBlog/${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Share</a>
                     </div>
                 </article>`
         });
@@ -198,8 +199,26 @@ app.get('/getblogs', isAuthenticated, async (req, res) => {
     }
 })
 
+app.get('/shareBlog', async (req, res) => {
+    const blogId = req.query.id;
+    try {
+        // Check if the Web Share API is supported
+        if (navigator.share) {
+          await navigator.share({
+            title: 'Your Blog Post Title',
+            text: 'Check out this interesting blog post!',
+            url: window.location.href,
+          });
+        } else {
+          // Fallback for browsers that do not support the Web Share API
+          alert('Web Share API is not supported on this browser.');
+        }
+      } catch (error) {
+        console.error('Error sharing:', error.message);
+      }
+})
 
-app.post('/profile/addblog', isAuthenticated, async (req, res) => {
+app.post('/profile/addblog/', isAuthenticated, async (req, res) => {
     const blog = req.params.blog;
 
     // if()
@@ -210,13 +229,14 @@ app.post('/profile/addblog', isAuthenticated, async (req, res) => {
         const userId = (user._id);
         const blog = new Blog({
             author: userId,
+            fullname: req.body.fullname,
             profession: req.body.profession,
             title: req.body.title,
             about: req.body.about
         })
 
         await blog.save();
-        res.redirect(`/profile/getblogs?userId=${userId}`);
+        res.redirect(`/profile/getblogs/${userId}`);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal Server Error');
@@ -233,7 +253,7 @@ app.get('/logout', (req, res) => {
     });
 });
 
-app.get('/readBlog', isAuthenticated, async (req, res) => {
+app.get('/readBlog/:blogId', isAuthenticated, async (req, res) => {
     try {
 
         let htmlFile = fs.readFileSync(__dirname + '/Pages/blog.html', 'utf8', err => {
@@ -245,7 +265,7 @@ app.get('/readBlog', isAuthenticated, async (req, res) => {
             console.log('data written to file');
         });
 
-        const blogId = req.query.id;
+        const blogId = req.params.blogId;
         const blogPost = await Blog.findById(blogId);
         const user = await User.findOne(blogPost.author);
         let blog = "";
@@ -274,7 +294,7 @@ app.get('/readBlog', isAuthenticated, async (req, res) => {
     }
 });
 
-app.get('/readBlog', isAuthenticated, (req, res) => {
+app.get('/readBlog/:blogId', isAuthenticated, (req, res) => {
     res.sendFile('Pages/blog.html', { root: __dirname });
 });
 
@@ -286,7 +306,7 @@ app.get('/getblogs/back', isAuthenticated, (req, res) => {
     res.redirect('/getblogs');
 });
 
-app.get(`/profile/getblogs`, isAuthenticated, async (req, res) => {
+app.get(`/profile/getblogs/:userId`, isAuthenticated, async (req, res) => {
     try {
         let htmlFile = fs.readFileSync(__dirname + '/Pages/profile.html', 'utf8', err => {
             if (err) {
@@ -332,8 +352,8 @@ app.get(`/profile/getblogs`, isAuthenticated, async (req, res) => {
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 mt-3  text-left text-white">
-                        <a href="/readBlog?id=${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Read</a>
-                        <a href="/profile/deleteBlog?id=${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Delete</a>
+                        <a href="/readBlog/${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Read</a>
+                        <a href="/profile/deleteBlog/${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Delete</a>
                     </div>
                 </article>`
         });
@@ -347,7 +367,7 @@ app.get(`/profile/getblogs`, isAuthenticated, async (req, res) => {
     }
 });
 
-app.get('/profile', isAuthenticated, async (req, res) => {
+app.get('/profile/getblogs', isAuthenticated, async (req, res) => {
     const email = req.session.user.email;
     const userId = await User.findOne({ email });
     const blog = await Blog.find();
@@ -356,24 +376,13 @@ app.get('/profile', isAuthenticated, async (req, res) => {
     }
     else {
 
-        res.redirect(`/profile/getblogs?userId=${userId._id}`);
+        res.redirect(`/profile/getblogs/${userId._id}`);
     }
 })
 
-app.get('/profile/deleteBlog', isAuthenticated, async (req, res) => {
-    const user = req.query.id;
+app.get('/profile/deleteBlog/:blogId', isAuthenticated, async (req, res) => {
+    const user = req.params.blogId;
     console.log(user);
-    // const email = req.session.user.email;
-
-    // let blog = await Blog.findOne({ author: id });
-
-    // Blog.deleteOne({ _id: user })
-    //     .then(result => {
-    //         console.log(result);
-    //     })
-    //     .catch(error => {
-    //         console.error(error);
-    //     });
 
     const blog = Blog.findOne({ userId: user })
     if (blog) {
