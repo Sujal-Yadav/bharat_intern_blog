@@ -100,7 +100,9 @@ app.post('/signupuser', async (req, res) => {
             });
 
             await userSignUp.save();
-            return res.status(200).redirect(`/getblogs?userId=${user._id}`);
+            const email = req.body.email;
+            const user = await User.findOne({ email: email });
+            return res.status(200).redirect(`/getblogs/${user._id}`);
 
         }
     }
@@ -119,7 +121,7 @@ app.post('/userlogin', async (req, res) => {
         if (user) {
             if (user.email === email && user.password === pass) {
                 req.session.user = { userId: user._id, email: user.email };
-                return res.status(200).redirect(`/getblogs?userId=${user._id}`);
+                return res.status(200).redirect(`/getblogs/${user._id}`);
             }
             else {
                 return res.status(401).send("Incorrect password!");
@@ -136,7 +138,7 @@ app.post('/userlogin', async (req, res) => {
     }
 });
 
-app.get('/getblogs', isAuthenticated, async (req, res) => {
+app.get('/getblogs/:id', isAuthenticated, async (req, res) => {
 
     try {
         let htmlFile = fs.readFileSync(__dirname + '/Pages/home.html', 'utf8', err => {
@@ -166,7 +168,9 @@ app.get('/getblogs', isAuthenticated, async (req, res) => {
                                 ${element.title}
                             </a>
                         </h3>
-                        <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">${element.about}</p>
+                        <div class="mt-5 overflow-hidden line-clamp-3 text-sm leading-6 text-gray-600">
+                        <p >${element.about}</p>
+                        </div>
                     </div>
                     <div class="relative mt-8 flex items-center gap-x-4">
                         <img src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
@@ -218,7 +222,7 @@ app.get('/shareBlog', async (req, res) => {
       }
 })
 
-app.post('/profile/addblog/', isAuthenticated, async (req, res) => {
+app.post('/profile/addblog', isAuthenticated, async (req, res) => {
     const blog = req.params.blog;
 
     // if()
@@ -236,7 +240,7 @@ app.post('/profile/addblog/', isAuthenticated, async (req, res) => {
         })
 
         await blog.save();
-        res.redirect(`/profile/getblogs/${userId}`);
+        res.redirect(`/profile/getblogs`);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal Server Error');
@@ -306,7 +310,7 @@ app.get('/getblogs/back', isAuthenticated, (req, res) => {
     res.redirect('/getblogs');
 });
 
-app.get(`/profile/getblogs/:userId`, isAuthenticated, async (req, res) => {
+app.get(`/profile/getblogs`, isAuthenticated, async (req, res) => {
     try {
         let htmlFile = fs.readFileSync(__dirname + '/Pages/profile.html', 'utf8', err => {
             if (err) {
@@ -336,7 +340,9 @@ app.get(`/profile/getblogs/:userId`, isAuthenticated, async (req, res) => {
                                 ${element.title}
                             </a>
                         </h3>
-                        <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">${element.about}</p>
+                        <div class="mt-5 overflow-hidden line-clamp-3 text-sm leading-6 text-gray-600">
+                        <p >${element.about}</p>
+                        </div>
                     </div>
                     <div class="relative mt-8 flex items-center gap-x-4">
                         <img src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
@@ -376,7 +382,7 @@ app.get('/profile/getblogs', isAuthenticated, async (req, res) => {
     }
     else {
 
-        res.redirect(`/profile/getblogs/${userId._id}`);
+        res.redirect(`/profile/getblogs`);
     }
 })
 
@@ -394,7 +400,7 @@ app.get('/profile/deleteBlog/:blogId', isAuthenticated, async (req, res) => {
             .catch(error => {
                 console.error(error);
             });
-        return res.redirect(`/profile/getblogs?userId=${blog.author}`);
+        return res.redirect(`/profile/getblogs`);
     } else {
         res.redirect('/profile')
     }
