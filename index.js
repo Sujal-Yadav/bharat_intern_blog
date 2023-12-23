@@ -65,7 +65,7 @@ const isAuthenticated = (req, res, next) => {
 
 // }
 
-app.get('/', (req, res) => {
+app.get('https://sujal-yadav.github.io/bharat_intern_blog/', (req, res) => {
     res.sendFile("Pages/index.html", { root: __dirname });
 })
 
