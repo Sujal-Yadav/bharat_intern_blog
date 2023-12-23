@@ -1,14 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { ObjectId } = require('mongoose').Types;
 const User = require('./models/user');
 const Blog = require('./models/blog');
 const session = require('express-session');
-const path = require('path');
 const fs = require('fs');
-const { timeStamp } = require('console');
-const router = express.Router();
 const app = express();
 const port = 4000;
 
