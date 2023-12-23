@@ -111,6 +111,7 @@
 
 
     <div class="bg-white py-8 sm:py-8">
+
         <div class="mx-4 my-4 grid grid-cols-2 pb-12">
             <div class="col-span-1 p-6">
                 <p class="font-bold text-6xl m-12 pt-24">
@@ -141,12 +142,51 @@
                     expert advice.
                 </p>
             </div>
-            <div
+            <div id="blogLinkInput"
                 class="grid grid-cols-3 gap-6 mx-auto grid max-w-2xl grid-cols-3 gap-x-10 gap-y-16 pt-5 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                 { blogPosts }
             </div>
+            <span hidden>
+                <input type="text" value="{ blogLink }" id="blogLinkInput" readonly
+                    class="mb-4 bg-gray-100 p-2 w-full rounded-md">
+            </span>
         </div>
     </div>
+
+    <script>
+        async function copyToClipboard(blogId) {
+            try {
+                const response = await fetch(`/shareBlog/${blogId}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    const blogLinkInput = document.createElement('input');
+                    blogLinkInput.value = data.blogLink;
+                    document.body.appendChild(blogLinkInput);
+                    blogLinkInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(blogLinkInput);
+                    const customAlert = document.createElement('div');
+                    customAlert.className = 'fixed top-0 right-0 m-4 flex items-center p-4 mb-4 text-lg text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400';
+                    customAlert.textContent = 'Link copied to clipboard!';
+
+                    // Append the custom alert to the document body
+                    document.body.appendChild(customAlert);
+
+                    // Remove the custom alert after a certain duration (e.g., 3 seconds)
+                    setTimeout(() => {
+                        document.body.removeChild(customAlert);
+                    }, 4000);
+
+                } else {
+                    alert(data.error || 'Failed to share blog');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Internal Server Error');
+            }
+        }
+    </script>
 
 </body>
 
