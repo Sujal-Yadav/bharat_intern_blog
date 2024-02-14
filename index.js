@@ -4,9 +4,10 @@ const bodyParser = require('body-parser');
 const User = require('./models/User');
 const Blog = require('./models/blog');
 require('dotenv').config();
-const session = require('express-session');
 const fs = require('fs');
 const app = express();
+const session = require('express-session')
+const MemoryStore = require('memorystore')(session)
 const port = process.env.PORT;
 
 
@@ -17,9 +18,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(session({
-    secret: 'keyboard cat',
+    cookie: { maxAge: 86400000 },
+    store: new MemoryStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    }),
     resave: false,
-    saveUninitialized: true,
+    secret: 'keyboard cat'
 }))
 
 mongoose.connect(process.env.MONGODB_URL);
