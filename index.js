@@ -9,7 +9,7 @@ const app = express();
 const session = require('express-session')
 const MemoryStore = require('memorystore')(session)
 const port = process.env.PORT;
-
+// app.set('view engine', 'html');
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -47,7 +47,7 @@ const isAuthenticated = (req, res, next) => {
 //             const blog = await Blog.findOne({ author: id });
 //             // console.log(blog);
 //             if (!blog) {
-//                 // res.sendFile("Pages/profile.html", { root: __dirname });
+//                 // res.sendFile("public/profile.html", { root: __dirname });
 //                 res.redirect('/profile/addblog');
 //             }
 
@@ -68,15 +68,15 @@ const isAuthenticated = (req, res, next) => {
 // }
 
 app.get('/', (req, res) => {
-    res.sendFile("Pages/index.html", { root: __dirname });
+    res.sendFile("public/index.html", { root: __dirname });
 })
 
 app.get('/signup', (req, res) => {
-    res.sendFile("/Pages/signup.html", { root: __dirname });
+    res.sendFile("/public/signup.html", { root: __dirname });
 })
 
 app.get('/homepage', isAuthenticated, (req, res) => {
-    res.sendFile("/Pages/home.html", { root: __dirname });
+    res.sendFile("/public/home.html", { root: __dirname });
 })
 
 app.post('/signupuser', async (req, res) => {
@@ -85,7 +85,7 @@ app.post('/signupuser', async (req, res) => {
         console.log("User found.");
 
         if (user) {
-            return res.status(200).sendFile("Pages/index.html", { root: __dirname });
+            return res.status(200).sendFile("public/index.html", { root: __dirname });
         }
         else {
 
@@ -130,7 +130,7 @@ app.post('/userlogin', async (req, res) => {
         }
         else {
             // alert("Your are not registered! PLease Sign Up");
-            return res.status(200).sendFile("Pages/signup.html", { root: __dirname });
+            return res.status(200).sendFile("public/signup.html", { root: __dirname });
         }
     }
     catch (error) {
@@ -142,7 +142,7 @@ app.post('/userlogin', async (req, res) => {
 app.get('/getblogs/:id', isAuthenticated, async (req, res) => {
 
     try {
-        let htmlFile = fs.readFileSync(__dirname + '/Pages/home.html', 'utf8', err => {
+        let htmlFile = fs.readFileSync(__dirname + '/public/home.html', 'utf8', err => {
             if (err) {
                 console.log(err.message);
 
@@ -261,7 +261,7 @@ app.get('/logout', (req, res) => {
 app.get('/readBlog/:blogId', isAuthenticated, async (req, res) => {
     try {
 
-        let htmlFile = fs.readFileSync(__dirname + '/Pages/blog.html', 'utf8', err => {
+        let htmlFile = fs.readFileSync(__dirname + '/public/blog.html', 'utf8', err => {
             if (err) {
                 console.log(err.message);
 
@@ -300,7 +300,7 @@ app.get('/readBlog/:blogId', isAuthenticated, async (req, res) => {
 });
 
 app.get('/readBlog/:blogId', isAuthenticated, (req, res) => {
-    res.sendFile('Pages/blog.html', { root: __dirname });
+    res.sendFile('public/blog.html', { root: __dirname });
 });
 
 app.get('/profile/getblogs/back', isAuthenticated, (req, res) => {
@@ -313,7 +313,7 @@ app.get('/getblogs/back', isAuthenticated, (req, res) => {
 
 app.get(`/profile/getblogs`, isAuthenticated, async (req, res) => {
     try {
-        let htmlFile = fs.readFileSync(__dirname + '/Pages/profile.html', 'utf8', err => {
+        let htmlFile = fs.readFileSync(__dirname + '/public/profile.html', 'utf8', err => {
             if (err) {
                 console.log(err.message);
 
@@ -379,7 +379,7 @@ app.get('/profile/getblogs', isAuthenticated, async (req, res) => {
     const userId = await User.findOne({ email });
     const blog = await Blog.find();
     if (!blog) {
-        res.sendFile("Pages/profile.html", { root: __dirname });
+        res.sendFile("public/profile.html", { root: __dirname });
     }
     else {
 
