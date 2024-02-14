@@ -68,15 +68,15 @@ const isAuthenticated = (req, res, next) => {
 // }
 
 app.get('/', (req, res) => {
-    res.sendFile("./index.html", { root: __dirname });
+    res.sendFile("public/index.html", { root: __dirname });
 })
 
 app.get('/signup', (req, res) => {
-    res.sendFile("/public/signup.html", { root: __dirname });
+    res.sendFile("public/signup.html", { root: __dirname });
 })
 
 app.get('/homepage', isAuthenticated, (req, res) => {
-    res.sendFile("/public/home.html", { root: __dirname });
+    res.sendFile("public/home.html", { root: __dirname });
 })
 
 app.post('/signupuser', async (req, res) => {
