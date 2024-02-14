@@ -68,7 +68,7 @@ const isAuthenticated = (req, res, next) => {
 // }
 
 app.get('/', (req, res) => {
-    res.sendFile("index.html", { root: __dirname });
+    res.sendFile("./index.html", { root: __dirname });
 })
 
 app.get('/signup', (req, res) => {
