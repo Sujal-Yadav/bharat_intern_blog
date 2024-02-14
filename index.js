@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const User = require('./models/User');
 const Blog = require('./models/blog');
+require('dotenv').config();
 const session = require('express-session');
 const fs = require('fs');
 const app = express();
-const port = 4000;
+const port = process.env.PORT;
+
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -20,7 +22,7 @@ app.use(session({
     saveUninitialized: true,
 }))
 
-mongoose.connect('mongodb://127.0.0.1:27017/bharat_intern_blog');
+mongoose.connect(process.env.MONGODB_URL);
 
 const isAuthenticated = (req, res, next) => {
     if (req.session.user) {
