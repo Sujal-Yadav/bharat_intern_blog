@@ -72,11 +72,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/signup', (req, res) => {
-    res.sendFile("public/signup.html", { root: __dirname });
+    res.sendFile(__dirname + '/public/signup.html');
 })
 
 app.get('/homepage', isAuthenticated, (req, res) => {
-    res.sendFile("public/home.html", { root: __dirname });
+    res.sendFile(__dirname + '/public/home.html');
 })
 
 app.post('/signupuser', async (req, res) => {
@@ -85,7 +85,7 @@ app.post('/signupuser', async (req, res) => {
         console.log("User found.");
 
         if (user) {
-            return res.status(200).sendFile("public/login.html", { root: __dirname });
+            return res.status(200).sendFile(__dirname + '/public/login.html');
         }
         else {
 
@@ -130,7 +130,7 @@ app.post('/userlogin', async (req, res) => {
         }
         else {
             // alert("Your are not registered! PLease Sign Up");
-            return res.status(200).sendFile("public/signup.html", { root: __dirname });
+            return res.status(200).sendFile(__dirname + '/public/signup.html');
         }
     }
     catch (error) {
@@ -379,7 +379,7 @@ app.get('/profile/getblogs', isAuthenticated, async (req, res) => {
     const userId = await User.findOne({ email });
     const blog = await Blog.find();
     if (!blog) {
-        res.sendFile("public/profile.html", { root: __dirname });
+        res.sendFile(__dirname + '/public/profile.html');
     }
     else {
 
