@@ -123,7 +123,7 @@ app.post('/userlogin', async (req, res) => {
         if (user) {
             if (user.email === email && user.password === pass) {
                 req.session.user = { userId: user._id, email: user.email };
-                return res.status(200).redirect(`/getblogs/${user._id}`);
+                return res.status(200).redirect(`/getblogs`);
             }
             else {
                 return res.status(401).send("Incorrect password!");
@@ -140,7 +140,7 @@ app.post('/userlogin', async (req, res) => {
     }
 });
 
-app.get(`/getblogs`, async (req, res) => {
+app.get(`/getblogs/`, async (req, res) => {
     const userId = req.session.user.userId;
     try {
         let htmlFile = fs.readFileSync(__dirname + '/public/home.html', 'utf8', err => {
