@@ -139,7 +139,7 @@ app.post('/userlogin', async (req, res) => {
     }
 });
 
-app.get('/getblogs/:id', isAuthenticated, async (req, res) => {
+app.get('/getblogs/:id', async (req, res) => {
 
     try {
         let htmlFile = fs.readFileSync(__dirname + '/public/home.html', 'utf8', err => {
