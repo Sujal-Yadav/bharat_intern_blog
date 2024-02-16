@@ -200,7 +200,7 @@ app.get(`/getblogs`, async (req, res) => {
         // Send the modified HTML to the client
 
         // res.send(modifiedhtml);
-        res.status(200).send(`/getblogs/${userId}`, modifiedhtml);
+        res.status(200).send(`/getblogs`, modifiedhtml);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal Server Error');
