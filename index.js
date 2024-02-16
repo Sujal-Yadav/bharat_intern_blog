@@ -68,7 +68,7 @@ const isAuthenticated = (req, res, next) => {
 // }
 
 app.get('/', (req, res) => {
-    res.sendFile("public/index.html", { root: __dirname });
+    res.sendFile("public/login.html", { root: __dirname });
 })
 
 app.get('/signup', (req, res) => {
@@ -85,7 +85,7 @@ app.post('/signupuser', async (req, res) => {
         console.log("User found.");
 
         if (user) {
-            return res.status(200).sendFile("public/index.html", { root: __dirname });
+            return res.status(200).sendFile("public/login.html", { root: __dirname });
         }
         else {
 
