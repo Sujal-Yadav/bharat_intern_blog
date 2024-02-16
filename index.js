@@ -144,7 +144,7 @@ app.get('/getblogs', (req, res) => {
     res.sendFile(__dirname + '/public/home.html')
 });
 
-app.get(`/getblogs/:id`, async (req, res) => {
+app.get(`/getblogs`, async (req, res) => {
     const userId = req.params.id;
     try {
         let htmlFile = fs.readFileSync(__dirname + '/public/home.html', 'utf8', err => {
