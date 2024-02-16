@@ -140,8 +140,8 @@ app.post('/userlogin', async (req, res) => {
     }
 });
 
-app.get(`/getblogs/:id`, async (req, res) => {
-    const userId = req.params.id;
+app.get(`/getblogs`, async (req, res) => {
+    const userId = req.session.user.userId;
     try {
         let htmlFile = fs.readFileSync(__dirname + '/public/home.html', 'utf8', err => {
             if (err) {
@@ -226,7 +226,7 @@ app.get('/shareBlog/:id', async (req, res) => {
 });
 
 app.post('/profile/addblog', isAuthenticated, async (req, res) => {
-    const blog = req.params.blog;
+    // const blog = req.params.blog;
 
     // if()
     try {
