@@ -216,7 +216,7 @@ app.get('/shareBlog/:id', async (req, res) => {
             return res.status(404).json({ error: 'Blog not found' });
         }
 
-        const blogLink = `https://bharat-intern-blog-git-main-sujal-yadavs-projects.vercel.app/getblogs/back#`;
+        const blogLink = `https://bharat-intern-blog-git-main-sujal-yadavs-projects.vercel.app/getblogs/${blogId}`;
         res.json({ blogLink });
     } catch (error) {
         console.error('Error fetching blog:', error);
