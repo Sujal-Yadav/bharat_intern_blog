@@ -68,7 +68,7 @@ const isAuthenticated = (req, res, next) => {
 // }
 
 app.get('/', (req, res) => {
-    res.sendFile("bharat-intern-blog.vercel.app/public/login.html", { root: __dirname });
+    res.sendFile("./public/login.html", { root: __dirname });
 })
 
 app.get('/signup', (req, res) => {
