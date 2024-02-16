@@ -6,7 +6,8 @@ const Blog = require('./models/blog');
 require('dotenv').config();
 const fs = require('fs');
 const app = express();
-const session = require('express-session')
+const session = require('express-session');
+const blog = require('./models/blog');
 const MemoryStore = require('memorystore')(session)
 const port = process.env.PORT;
 // app.set('view engine', 'html');
@@ -20,7 +21,7 @@ app.use(bodyParser.json());
 app.use(session({
     cookie: { maxAge: 86400000 },
     store: new MemoryStore({
-      checkPeriod: 86400000 // prune expired entries every 24h
+        checkPeriod: 86400000 // prune expired entries every 24h
     }),
     resave: false,
     secret: 'keyboard cat'
@@ -143,8 +144,8 @@ app.get('/getblogs', (req, res) => {
     res.sendFile(__dirname + '/public/home.html')
 });
 
-app.get('/getblogs/:id', async (req, res) => {
-
+app.get(`/getblogs/:id`, async (req, res) => {
+    const userId = req.params.id;
     try {
         let htmlFile = fs.readFileSync(__dirname + '/public/home.html', 'utf8', err => {
             if (err) {
@@ -156,7 +157,7 @@ app.get('/getblogs/:id', async (req, res) => {
         });
 
         const array = await Blog.find();
-        const user = await User.find({ userId: array.author });
+        // const user = await User.find({ userId: array.author });
         // console.log(user);
         let posts = "";
         array.forEach(element => {
@@ -202,8 +203,8 @@ app.get('/getblogs/:id', async (req, res) => {
 
         // Send the modified HTML to the client
 
-        res.send(modifiedhtml);
-        // res.status(200).send(`/getblogs?userId=${a}`,modifiedhtml);
+        // res.send(modifiedhtml);
+        res.status(200).send(`/getblogs/${userId}`, modifiedhtml);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal Server Error');
