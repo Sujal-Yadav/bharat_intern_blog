@@ -71,11 +71,11 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/login.html');
 })
 
-app.get('https://bharat-intern-blog-git-main-sujal-yadavs-projects.vercel.app/signup', (req, res) => {
+app.get('/signup', (req, res) => {
     res.sendFile(__dirname + '/public/signup.html');
 })
 
-app.get('https://bharat-intern-blog-git-main-sujal-yadavs-projects.vercel.app//homepage', isAuthenticated, (req, res) => {
+app.get('/homepage', isAuthenticated, (req, res) => {
     res.sendFile(__dirname + '/public/home.html');
 })
 
