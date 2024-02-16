@@ -139,6 +139,10 @@ app.post('/userlogin', async (req, res) => {
     }
 });
 
+app.get('/getblogs', (req, res) => {
+    res.sendFile(__dirname + '/public/home.html')
+});
+
 app.get('/getblogs/:id', async (req, res) => {
 
     try {
