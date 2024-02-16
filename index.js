@@ -104,7 +104,7 @@ app.post('/signupuser', async (req, res) => {
             await userSignUp.save();
             const email = req.body.email;
             const user = await User.findOne({ email: email });
-            return res.status(200).redirect(`/getblogs/${user._id}`);
+            return res.status(200).redirect(`/getblogs`);
 
         }
     }
@@ -140,7 +140,7 @@ app.post('/userlogin', async (req, res) => {
     }
 });
 
-app.get(`/getblogs/`, async (req, res) => {
+app.get(`/getblogs`, async (req, res) => {
     const userId = req.session.user.userId;
     try {
         let htmlFile = fs.readFileSync(__dirname + '/public/home.html', 'utf8', err => {
