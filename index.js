@@ -188,7 +188,7 @@ app.get('/getblogs/:id', isAuthenticated, async (req, res) => {
                         </div>
                         <div class="grid grid-cols-2  gap-2 mt-3  text-left text-white">
                             <a href="/readBlog/${element._id}" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]">Read</a>
-                            <a href="#" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]" onclick="copyToClipboard('https://bharat-intern-blog-git-main-sujal-yadavs-projects.vercel.app/getblogs/${element._id}')">Share</a>
+                            <a type="button" class="btn col-span-1 text-white hover:bg-[#3b82f6] bg-[#1d4ed8]" onclick="copyToClipboard('${element._id}')">Share</a>
 
                         </div>
                     </article>`
@@ -216,7 +216,7 @@ app.get('/shareBlog/:id', async (req, res) => {
             return res.status(404).json({ error: 'Blog not found' });
         }
 
-        const blogLink = `https://bharat-intern-blog-git-main-sujal-yadavs-projects.vercel.app/getblogs/${blogId}`;
+        const blogLink = `https://bharat-intern-blog-git-main-sujal-yadavs-projects.vercel.app/getblogs/back#`;
         res.json({ blogLink });
     } catch (error) {
         console.error('Error fetching blog:', error);
